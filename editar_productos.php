@@ -53,14 +53,15 @@
                     $fecha_caducidad = $_POST['fecha_caducidad'];
                     $categoria = $_POST['categoria'];
                     $cantidad = $_POST['cantidad'];
+                    $codigo_barra = $_POST['codigo_barra'];
 
                     // Actualizar los datos en la base de datos
-                    $sql_update = $conexion->prepare("UPDATE productos SET producto=?, proveedor=?, precio_adq=?, precio_venta=?, fecha_ingreso=?, fecha_caducidad=?, categoria=?, cantidad=? WHERE id_producto=?");
-                    $sql_update->bind_param("ssddssssi", $producto, $proveedor, $precio_adq, $precio_venta, $fecha_ingreso, $fecha_caducidad, $categoria, $cantidad, $id_producto);
+                    $sql_update = $conexion->prepare("UPDATE productos SET producto=?, proveedor=?, precio_adq=?, precio_venta=?, fecha_ingreso=?, fecha_caducidad=?, categoria=?, cantidad=?, codigo_barra=? WHERE id_producto=?");
+                    $sql_update->bind_param("ssddssssii", $producto, $proveedor, $precio_adq, $precio_venta, $fecha_ingreso, $fecha_caducidad, $categoria, $cantidad, $codigo_barra, $id_producto);
                     
                     if($sql_update->execute()) {
                         echo "<p class='text-success'>Los datos se han actualizado correctamente.</p>";
-                        header("Location: index.php");
+                        header("Location: gestion_inventario.php");
                     } else {
                         echo "<p class='text-danger'>Error al actualizar los datos.</p>";
                     }
@@ -100,6 +101,10 @@
                     <div class="mb-3">
                         <label for="exampleInputCantidad" class="form-label">Cantidad</label>
                         <input type="number" class="form-control" name="cantidad" value="<?= $datos->cantidad ?>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputCantidad" class="form-label">Codigo de barra</label>
+                        <input type="number" class="form-control" name="codigo_barra" value="<?= $datos->codigo_barra ?>">
                     </div>
 
                     <button type="submit" class="btn btn-primary" name="boton_editar" value="ok">Guardar Cambios</button>

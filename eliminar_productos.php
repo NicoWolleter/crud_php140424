@@ -14,8 +14,8 @@ if(isset($_GET['id'])) {
         $sql_delete->bind_param("i", $id_producto);
         
         if($sql_delete->execute()) {
-            // Redirigir al usuario a index.php después de eliminar el producto
-            header("Location: index.php?mensaje=Producto+eliminado");
+            // Redirigir al usuario a gestion_inventario.php después de eliminar el producto
+            header("Location: gestion_inventario.php?mensaje=Producto+eliminado");
             exit(); // Es importante salir del script después de redirigir
         } else {
             echo "<p class='text-danger'>Error al eliminar el producto.</p>";
