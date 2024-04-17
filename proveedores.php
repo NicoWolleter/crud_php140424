@@ -32,7 +32,7 @@
             <!-- formulario de registro de productos -->
 
                 <form method="POST">
-                    <h3 class="text-center text-secondary">Registro de proveerdores</h3>
+                    <h3 class="text-center text-secondary">Registro de proveedores</h3>
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Nombre del proveedor</label>
                         <input type="text" class="form-control" name="nombre_proveedor">
@@ -55,7 +55,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Fecha de registro</label>
-                        <input type="text" class="form-control" name="fecha_registro">
+                        <input type="date" class="form-control" name="fecha_registro">
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Estado de proveedor</label>
