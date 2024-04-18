@@ -40,7 +40,7 @@
     <!-- Barra de navegación -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Inicio</a>
+            <a class="navbar-brand" href="index.php">Inicio</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -50,7 +50,7 @@
                         <a class="nav-link" href="gestion_inventario.php">Gestión de Inventario</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Gestión de Proveedores</a>
+                        <a class="nav-link" href="proveedores.php">Gestión de Proveedores</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Ventas</a>
@@ -65,8 +65,8 @@
 
     <!-- Botones de inicio de sesión y registro -->
     <div class="btn-container">
-        <a href="login.php" class="btn btn-primary">Iniciar Sesión</a>
-        <a href="../controlador/registro_usuarios.php" class="btn btn-secondary ms-3">Crear Usuario</a>
+        <a href=".../login.php" class="btn btn-primary">Iniciar Sesión</a>
+        <a href="controlador/registro_usuarios.php" class="btn btn-secondary ms-3">Crear Usuario</a>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

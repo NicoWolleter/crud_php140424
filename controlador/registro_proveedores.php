@@ -1,33 +1,28 @@
 <?php
 // Procesar el formulario cuando se envíe
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Verificar si el formulario ha sido enviado y si hay campos vacíos
-    if (isset($_POST['boton_registro']) && empty(array_filter($_POST))) {
-        echo "<p class='text-danger'>Se detectaron campos vacíos, favor rellenar para avanzar.</p>";
+    // Incluir el archivo de conexión a la base de datos
+    include_once $_SERVER['DOCUMENT_ROOT'] . "/crud_php/modelo/conexion.php";
+
+    // Obtener los datos del formulario
+    $nombre_proveedor = $_POST['nombre_proveedor'];
+    $contacto_proveedor = $_POST['contacto_proveedor'];
+    $info_facturacion = $_POST['info_facturacion'];
+    $info_envio = $_POST['info_envio'];
+    $categoria_proveedor = $_POST['categoria_proveedor'];
+    $fecha_registro = $_POST['fecha_registro'];
+    $estado_proveedor = $_POST['estado_proveedor'];
+
+    // Insertar el proveedor en la base de datos
+    $sql_insert = "INSERT INTO proveedores (nombre_proveedor, contacto_proveedor, info_facturacion, info_envio, categoria_proveedor, fecha_registro, estado_proveedor) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $stmt_insert = $conexion->prepare($sql_insert);
+    $stmt_insert->bind_param("sssssss", $nombre_proveedor, $contacto_proveedor, $info_facturacion, $info_envio, $categoria_proveedor, $fecha_registro, $estado_proveedor);
+
+    if ($stmt_insert->execute()) {
+        // Proveedor registrado exitosamente
+        echo "<p class='text-success'>Proveedor registrado correctamente.</p>";
     } else {
-        // Incluir el archivo de conexión a la base de datos
-        include_once $_SERVER['DOCUMENT_ROOT'] . "/crud_php/modelo/conexion.php";
-
-        // Obtener los datos del formulario
-        $nombre_proveedor = $_POST['nombre_proveedor'];
-        $contacto_proveedor = $_POST['contacto_proveedor'];
-        $info_facturacion = $_POST['info_facturacion'];
-        $info_envio = $_POST['info_envio'];
-        $categoria_proveedor = $_POST['categoria_proveedor'];
-        $fecha_registro = $_POST['fecha_registro'];
-        $estado_proveedor = $_POST['estado_proveedor'];
-
-        // Insertar el proveedor en la base de datos
-        $sql_insert = "INSERT INTO proveedores (nombre_proveedor, contacto_proveedor, info_facturacion, info_envio, categoria_proveedor, fecha_registro, estado_proveedor) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        $stmt_insert = $conexion->prepare($sql_insert);
-        $stmt_insert->bind_param("sssssss", $nombre_proveedor, $contacto_proveedor, $info_facturacion, $info_envio, $categoria_proveedor, $fecha_registro, $estado_proveedor);
-
-        if ($stmt_insert->execute()) {
-            // Proveedor registrado exitosamente
-            echo "<p class='text-success'>Proveedor registrado correctamente.</p>";
-        } else {
-            echo "<p class='text-danger'>Error al registrar el proveedor.</p>";
-        }
+        echo "<p class='text-danger'>Error al registrar el proveedor.</p>";
     }
 }
 ?>
@@ -85,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                     <div class="mb-3">
                         <label for="fecha_registro" class="form-label">Fecha de Registro</label>
-                        <input type="date" class="form-control" name="fecha_registro" value="<?php echo date("Y-m-d H:i:s"); ?>" readonly>
+                        <input type="date" class="form-control" name="fecha_registro">
                     </div>
                     <div class="mb-3">
                         <label for="estado_proveedor" class="form-label">Estado del Proveedor</label>

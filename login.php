@@ -17,37 +17,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $correo_usuario = $_POST['correo_usuario'];
     $password_usuario = $_POST['password_usuario'];
 
-    // Consultar la base de datos para obtener la contraseña del usuario
-    $sql_check = "SELECT correo_usuario, password_usuario FROM usuarios WHERE correo_usuario = ?";
+    // Consultar la base de datos para verificar la contraseña
+    // $sql_check = "SELECT correo_usuario FROM usuarios WHERE correo_usuario = '  .$correo_usuario.' AND password_usuario = '.$password_usuario.'";
+    $sql_check = "SELECT correo_usuario FROM usuarios WHERE correo_usuario = '" . $correo_usuario . "' AND password_usuario = '" . $password_usuario . "'";
+
+    echo $sql_check;
     $stmt = $conexion->prepare($sql_check);
-    $stmt->bind_param("s", $correo_usuario);
+    // Hashear la contraseña proporcionada antes de compararla con la almacenada
+    //$hashed_password = hash('sha256', $password_usuario); // Puedes utilizar otro algoritmo de hash según tu preferencia
+    //$stmt->bind_param("ss", $correo_usuario, $hashed_password);
     $stmt->execute();
     $stmt->store_result();
-
     if ($stmt->num_rows == 1) {
-        // Vincular las variables de resultado
-        $stmt->bind_result($correo_usuario_result, $password_hash);
-        $stmt->fetch();
-        // Mostrar mensajes de depuración
-        echo "Correo encontrado en la base de datos: $correo_usuario_result<br>";
-        echo "Contraseña hash almacenada: $password_hash<br>";
-        // Verificar la contraseña
-        if (password_verify($password_usuario, $password_hash)) {
-            // Contraseña correcta, iniciar sesión y redirigir al usuario
-            $_SESSION['correo_usuario'] = $correo_usuario;
-            header("Location: index.php");
-            exit();
-        } else {
-            // Contraseña incorrecta
-            $error_message = "Usuario o contraseña incorrectos.";
-        }
+        // Usuario encontrado, iniciar sesión y redirigir al usuario
+        $_SESSION['correo_usuario'] = $correo_usuario;
+        header("Location: index.php");
+        exit();
     } else {
-        // Usuario no encontrado
+        // Usuario no encontrado o contraseña incorrecta
         $error_message = "Usuario o contraseña incorrectos.";
     }
 }
-
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">

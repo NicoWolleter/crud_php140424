@@ -22,9 +22,42 @@
             background-color: rgba(255, 255, 255, 0.9); /* Agrega un fondo semi-transparente a los contenidos para mejorar la legibilidad */
             padding: 20px; /* Añade relleno para separar los contenidos del fondo */
         }
+        .navbar {
+        background-color: #007bff; /* Cambia el color de fondo de la barra de navegación a azul */
+        padding: 20px 0; /* Ajusta el relleno vertical (20px) y elimina el relleno horizontal */
+        }
+
+        .navbar-nav .nav-link {
+        color: black !important; /* Cambia el color del texto de los enlaces */
+        }
     </style>
 </head>
 <body>
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark !important">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.php">Inicio</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="gestion_inventario.php">Gestión de Inventario</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="proveedores.php">Gestión de Proveedores</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Ventas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Estadísticas</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     <h1 class="text-center p-3">INVENTARIO DE CAFETERIA</h1>
     <div class="container-fluid">
         <div class="row">
