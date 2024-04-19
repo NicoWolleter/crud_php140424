@@ -34,6 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>CRUD CAFETERIA</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/52820557f8.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css"> <!--dataTables CSS-->
     <style>
         /* Establece la imagen de fondo */
         body {
@@ -128,7 +129,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <!-- tabla de visualizacion de productos -->
             <div class="col-md-8">
-                <table class="table">
+                <table id="tablaProveedores" class="table">
                     <thead>
                         <tr class="bg-info">
                             <th scope="col">id_proveedor</th>
@@ -148,18 +149,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $sql = $conexion->query("SELECT * FROM proveedores");
                         while ($datos = $sql->fetch_object()) { ?>
                             <tr>
-                                    <td><?= $datos->id_proveedor ?></td>
-                                    <td><?= $datos->nombre_proveedor ?></td>
-                                    <td><?= $datos->contacto_proveedor ?></td>
-                                    <td><?= $datos->info_facturacion ?></td>
-                                    <td><?= $datos->info_envio ?></td>
-                                    <td><?= $datos->categoria_proveedor ?></td>
-                                    <td><?= $datos->fecha_registro ?></td>
-                                    <td><?= $datos->estado_proveedor ?></td>
-                                    <td>
+                                <td><?= $datos->id_proveedor ?></td>
+                                <td><?= $datos->nombre_proveedor ?></td>
+                                <td><?= $datos->contacto_proveedor ?></td>
+                                <td><?= $datos->info_facturacion ?></td>
+                                <td><?= $datos->info_envio ?></td>
+                                <td><?= $datos->categoria_proveedor ?></td>
+                                <td><?= $datos->fecha_registro ?></td>
+                                <td><?= $datos->estado_proveedor ?></td>
+                                <td>
                                     <a href="editar_proveedor.php?id=<?= $datos->id_proveedor ?>" class="btn btn-small btn-warning"><i class="fa-solid fa-user-pen"></i></a>
                                     <a href="eliminar_proveedor.php?id=<?= $datos->id_proveedor ?>" class="btn btn-small btn-danger"><i class="fa-solid fa-trash"></i></a>
-                                    </td>
+                                </td>
                             </tr>
                         <?php } ?>
                     </tbody>
@@ -168,5 +169,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script> <!-- jQuery -->
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script> <!-- DataTables -->
+    <script>
+        $(document).ready(function() {
+            $('#tablaProveedores').DataTable({
+                "pagingType": "simple_numbers", // Muestra solo los números de paginación
+                "pageLength": 5 // Establece la cantidad máxima de elementos por página
+            });
+        });
+    </script>
 </body>
 </html>
