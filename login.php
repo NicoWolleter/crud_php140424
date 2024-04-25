@@ -2,7 +2,7 @@
 // Iniciar sesión
 session_start();
 
-// Verificar si el usuario ya inició sesión, redirigirlo si es así
+// Verificar si el usuario ya inició sesión, redirigir si es así
 if (isset($_SESSION['correo_usuario'])) {
     header("Location: index.php");
     exit();
@@ -11,23 +11,27 @@ if (isset($_SESSION['correo_usuario'])) {
 // Procesar el formulario de inicio de sesión cuando se envíe
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Incluir el archivo de conexión a la base de datos
-    include_once $_SERVER['DOCUMENT_ROOT'] . "/crud_php/modelo/conexion.php";
+    include_once 'modelo/conexion.php';
 
     // Obtener los datos del formulario
     $correo_usuario = $_POST['correo_usuario'];
     $password_usuario = $_POST['password_usuario'];
 
     // Consultar la base de datos para verificar la contraseña
-    // $sql_check = "SELECT correo_usuario FROM usuarios WHERE correo_usuario = '  .$correo_usuario.' AND password_usuario = '.$password_usuario.'";
-    $sql_check = "SELECT correo_usuario FROM usuarios WHERE correo_usuario = '" . $correo_usuario . "' AND password_usuario = '" . $password_usuario . "'";
+    $sql_check = "SELECT correo_usuario FROM usuarios WHERE correo_usuario = ? AND password_usuario = ?";
 
-    echo $sql_check;
+    // Preparar la consulta
     $stmt = $conexion->prepare($sql_check);
-    // Hashear la contraseña proporcionada antes de compararla con la almacenada
-    //$hashed_password = hash('sha256', $password_usuario); // Puedes utilizar otro algoritmo de hash según tu preferencia
-    //$stmt->bind_param("ss", $correo_usuario, $hashed_password);
+
+    // Enlazar los parámetros
+    $stmt->bind_param("ss", $correo_usuario, $password_usuario);
+
+    // Ejecutar la consulta
     $stmt->execute();
+
+    // Obtener el resultado
     $stmt->store_result();
+
     if ($stmt->num_rows == 1) {
         // Usuario encontrado, iniciar sesión y redirigir al usuario
         $_SESSION['correo_usuario'] = $correo_usuario;
@@ -37,6 +41,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Usuario no encontrado o contraseña incorrecta
         $error_message = "Usuario o contraseña incorrectos.";
     }
+
+    // Cerrar la consulta
+    $stmt->close();
 }
 ?>
 

@@ -62,13 +62,11 @@
             </div>
         </div>
     </nav>
-
     <!-- Botones de inicio de sesión y registro -->
     <div class="btn-container">
-        <a href=".../login.php" class="btn btn-primary">Iniciar Sesión</a>
+        <a href="login.php" class="btn btn-primary">Iniciar Sesión</a>
         <a href="controlador/registro_usuarios.php" class="btn btn-secondary ms-3">Crear Usuario</a>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
