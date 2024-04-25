@@ -34,7 +34,7 @@
 </head>
 <body>
     <!-- Barra de navegación -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark !important">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="main.php">Inicio</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,13 +49,19 @@
                         <a class="nav-link" href="proveedores.php">Gestión de Proveedores</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Ventas</a>
+                        <a class="nav-link" href="venta.php">Ventas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="ventas_registradas.php">Ventas registradas</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Estadísticas</a>
                     </li>
                 </ul>
             </div>
+            <form class="d-flex">
+                <button class="btn btn-outline-light logout-button" type="submit" formaction="logout.php">Cerrar Sesión</button>
+            </form>
         </div>
     </nav>
     <h1 class="text-center p-3">INVENTARIO DE CAFETERIA</h1>
