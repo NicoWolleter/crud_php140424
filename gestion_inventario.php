@@ -49,7 +49,7 @@
                         <a class="nav-link" href="proveedores.php">Gestión de Proveedores</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="venta.php">Ventas</a>
+                        <a class="nav-link" href="agregar_productos.php">Ventas</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="ventas_registradas.php">Ventas registradas</a>
@@ -128,6 +128,7 @@
                     <th scope="col">categoria</th>
                     <th scope="col">cantidad</th>
                     <th scope="col">codigo_barra</th>
+                    <th scope="col">productos vendidos</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -148,6 +149,7 @@
                         <td><?= $datos->categoria ?></td>
                         <td><?= $datos->cantidad ?></td>
                         <td><?= $datos->codigo_barra ?></td>
+                        <td><?= $datos->productos_vendidos ?></td>
                         <td>
                             <a href="editar_productos.php?id=<?= $datos->id_producto ?>" class="btn btn-small btn-warning"><i class="fa-solid fa-user-pen"></i></a>
                             <a href="eliminar_productos.php?id=<?= $datos->id_producto ?>" class="btn btn-small btn-danger"><i class="fa-solid fa-trash"></i></a>

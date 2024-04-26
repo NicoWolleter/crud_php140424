@@ -77,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <a class="nav-link" href="proveedores.php">Gestión de Proveedores</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="venta.php">Ventas</a>
+                        <a class="nav-link" href="agregar_productos.php">Ventas</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="ventas_registradas.php">Ventas registradas</a>

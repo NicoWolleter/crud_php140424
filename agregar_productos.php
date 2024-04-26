@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Inicio</title>
+    <title>Agregar Productos</title>
+    <!-- Agrega los estilos CSS del sistema -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
         /* Establece la imagen de fondo */
@@ -18,18 +19,6 @@
         .navbar {
             margin-bottom: 20px; /* Agrega un margen inferior a la barra de navegación */
             width: 100%; /* Hace que la barra de navegación ocupe todo el ancho */
-        }
-        /* Estilo para centrar la imagen y el mensaje */
-        .center-container {
-            display: flex;
-            flex-direction: column; /* Apila el mensaje y la imagen verticalmente */
-            justify-content: center; /* Centra horizontalmente */
-            align-items: center; /* Centra verticalmente */
-            height: calc(100vh - 56px); /* Resta el tamaño de la barra de navegación */
-        }
-        .img-ubb {
-            max-width: 100%; /* Asegura que la imagen no exceda el ancho del contenedor */
-            max-height: 100%; /* Asegura que la imagen no exceda la altura del contenedor */
         }
         /* Estilo para el botón de cerrar sesión */
         .logout-button {
@@ -70,12 +59,59 @@
         </div>
     </nav>
 
-    <!-- Contenedor centrado -->
-    <div class="center-container">
-        <h1 class="text-center">Bienvenido al sistema de gestión de ventas cafetería UBB</h1>
-        <img src="https://media.biobiochile.cl/wp-content/uploads/2019/11/ubb.jpg" class="img-ubb" alt="Imagen UBB">
+    <!-- Formulario para agregar productos -->
+    <div class="container">
+        <h1 class="text-center">Agregar Productos</h1>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <form method="POST" action="realizar_cobro.php">
+                    <div class="mb-3">
+                        <label for="codigo_barra" class="form-label">Código de Barras</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="codigo_barra" id="codigo_barra">
+                            <input type="number" class="form-control" name="cantidad" id="cantidad" value="1" min="1">
+                            <button type="button" class="btn btn-primary" id="agregar_producto">Agregar Producto</button>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productos" class="form-label">Productos</label>
+                        <ul class="list-group" id="lista_productos"></ul>
+                    </div>
+                    <input type="hidden" name="productos" id="productos_input">
+                    <button type="submit" class="btn btn-primary">Realizar Cobro</button>
+                </form>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        // Obtener los elementos del formulario
+        const codigoBarraInput = document.getElementById('codigo_barra');
+        const cantidadInput = document.getElementById('cantidad');
+        const agregarProductoBtn = document.getElementById('agregar_producto');
+        const listaProductos = document.getElementById('lista_productos');
+        const productosInput = document.getElementById('productos_input');
+
+        // Agregar evento al botón "Agregar Producto"
+        agregarProductoBtn.addEventListener('click', function() {
+            const codigoBarra = codigoBarraInput.value;
+            const cantidad = cantidadInput.value;
+
+            if (codigoBarra && cantidad) {
+                const producto = `${codigoBarra},${cantidad}`;
+                const li = document.createElement('li');
+                li.className = 'list-group-item';
+                li.textContent = producto;
+                listaProductos.appendChild(li);
+                codigoBarraInput.value = '';
+                cantidadInput.value = '1';
+
+                // Actualizar el valor del campo oculto de productos
+                const productos = Array.from(listaProductos.children).map(li => li.textContent).join(';');
+                productosInput.value = productos;
+            }
+        });
+    </script>
 </body>
 </html>

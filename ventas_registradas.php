@@ -12,73 +12,33 @@ include 'modelo/conexion.php';
 // Obtener el usuario de la sesión
 $usuario = $_SESSION['correo_usuario'];
 
-// Verificar si el formulario ha sido enviado y procesar la venta
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Obtener los datos del formulario
-    $codigo_barra = $_POST['codigo_barra'];
-    $cantidad = $_POST['cantidad'];
-    $descuento_tipo = $_POST['descuento_tipo'];
-    $descuento_valor = $_POST['descuento_valor'];
-    $tipo_pago = $_POST['tipo_pago'];
-
-    // Verificar si el producto existe en la tabla productos
-    $sql_check_product = "SELECT * FROM productos WHERE codigo_barra = ?";
-    $stmt_check_product = $conexion->prepare($sql_check_product);
-    $stmt_check_product->bind_param("s", $codigo_barra);
-    $stmt_check_product->execute();
-    $result_check_product = $stmt_check_product->get_result();
-
-    if ($result_check_product->num_rows == 1) {
-        // El producto existe, proceder con la venta
-
-        // Obtener información del producto
-        $producto = $result_check_product->fetch_assoc();
-        $precio_unitario = $producto['precio_unitario'];
-        // Aplicar descuento si existe
-        if ($descuento_tipo === 'porcentaje') {
-            $total_venta = $cantidad * $precio_unitario * (1 - ($descuento_valor / 100));
-        } else {
-            $total_venta = $cantidad * $precio_unitario - $descuento_valor;
-        }
-
-        // Insertar la venta en la tabla ventas
-        $sql_insert_venta = "INSERT INTO ventas (codigo_barra, cantidad, descuento_tipo, descuento_valor, tipo_pago, usuario, total_venta) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        $stmt_insert_venta = $conexion->prepare($sql_insert_venta);
-        $stmt_insert_venta->bind_param("sisssds", $codigo_barra, $cantidad, $descuento_tipo, $descuento_valor, $tipo_pago, $usuario, $total_venta);
-        $stmt_insert_venta->execute();
-
-        // Obtener la cantidad actual del producto
-        $cantidad_actual = $producto['cantidad'];
-        $nueva_cantidad = $cantidad_actual - $cantidad;
-
-        // Actualizar la cantidad del producto en la base de datos
-        $sql_update_quantity = "UPDATE productos SET cantidad = ? WHERE codigo_barra = ?";
-        $stmt_update_quantity = $conexion->prepare($sql_update_quantity);
-        $stmt_update_quantity->bind_param("is", $nueva_cantidad, $codigo_barra);
-        $stmt_update_quantity->execute();
-
-        // Redirigir o mostrar un mensaje de éxito
-        header("Location: ventas_registradas.php");
-        exit();
-    } else {
-        // El producto no existe en la tabla productos
-        $error_message = "El producto seleccionado no existe. Por favor, selecciona un producto válido.";
-    }
-}
-
 // Consulta SQL para obtener los registros de ventas con detalles de productos
 $sql_ventas_productos = "
-SELECT ventas.id_venta, ventas.cantidad, ventas.descuento_tipo, ventas.descuento_valor, ventas.tipo_pago, ventas.usuario, ventas.total_venta, ventas.fecha_hora, ventas.estado, productos.producto AS nombre_producto, productos.precio_unitario
+SELECT ventas.id_venta, ventas.cantidad, ventas.descuento_tipo, ventas.descuento_valor, ventas.tipo_pago, ventas.usuario, ventas.total_venta, ventas.fecha_hora, ventas.estado, productos.producto AS nombre_producto, productos.precio_venta, productos.productos_vendidos
 FROM ventas
 INNER JOIN productos ON ventas.codigo_barra = productos.codigo_barra
 ";
 
-
 // Ejecutar la consulta
 $resultado_ventas_productos = $conexion->query($sql_ventas_productos);
-?>
 
-<!-- Resto del código HTML -->
+$total_productos_vendidos = 0; // Inicializar contador de productos vendidos
+
+while ($fila = $resultado_ventas_productos->fetch_assoc()) {
+    $total_productos_vendidos += $fila['cantidad']; // Sumar la cantidad de productos vendidos
+}
+
+// Obtener la cantidad actual de productos vendidos
+$sql_get_quantity = "SELECT SUM(productos_vendidos) AS total_productos_vendidos FROM productos";
+$stmt_get_quantity = $conexion->prepare($sql_get_quantity);
+$stmt_get_quantity->execute();
+$result_get_quantity = $stmt_get_quantity->get_result();
+
+if ($result_get_quantity->num_rows == 1) {
+    $row = $result_get_quantity->fetch_assoc();
+    $total_productos_vendidos = $row['total_productos_vendidos'];
+}
+?>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -121,7 +81,7 @@ $resultado_ventas_productos = $conexion->query($sql_ventas_productos);
                         <a class="nav-link" href="proveedores.php">Gestión de Proveedores</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="venta.php">Ventas</a>
+                        <a class="nav-link" href="agregar_productos.php">Ventas</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="ventas_registradas.php">Ventas registradas</a>
@@ -139,6 +99,8 @@ $resultado_ventas_productos = $conexion->query($sql_ventas_productos);
 
     <div class="container">
         <h1 class="text-center p-3">Registros de Ventas</h1>
+
+        <p>Total de productos vendidos: <?php echo $total_productos_vendidos; ?></p>
 
         <table class="table" id="tablaVentas"> <!-- Agrega el ID "tablaVentas" a la tabla -->
             <thead>
@@ -158,7 +120,7 @@ $resultado_ventas_productos = $conexion->query($sql_ventas_productos);
 
                 // Consulta SQL para obtener los registros de ventas con detalles de productos
                 $sql_ventas_productos = "
-                SELECT ventas.id_venta, ventas.cantidad, ventas.descuento_tipo, ventas.descuento_valor, ventas.tipo_pago, ventas.usuario, ventas.total_venta, ventas.fecha_hora, ventas.estado, productos.producto AS nombre_producto, productos.precio_unitario
+                SELECT ventas.id_venta, ventas.cantidad, ventas.descuento_tipo, ventas.descuento_valor, ventas.tipo_pago, ventas.usuario, ventas.total_venta, ventas.fecha_hora, ventas.estado, productos.producto AS nombre_producto, productos.precio_venta
                 FROM ventas
                 INNER JOIN productos ON ventas.codigo_barra = productos.codigo_barra
                 ";
@@ -169,11 +131,11 @@ $resultado_ventas_productos = $conexion->query($sql_ventas_productos);
                 while ($fila = $resultado_ventas_productos->fetch_assoc()): ?>
                     <tr>
                         <td><?php echo $fila['id_venta']; ?></td>
-                        <td><?php echo $fila['nombre_producto']; ?> (Cantidad: <?php echo $fila['cantidad']; ?>, Precio Unitario: $<?php echo $fila['precio_unitario']; ?>)</td>
+                        <td><?php echo $fila['nombre_producto']; ?> (Cantidad: <?php echo $fila['cantidad']; ?>, Precio Unitario: $<?php echo $fila['precio_venta']; ?>)</td>
                         <td><?php echo $fila['fecha_hora']; ?></td>
                         <td><?php echo $fila['tipo_pago']; ?></td>
                         <td><?php echo $fila['usuario']; ?></td>
-                        <td><?php echo $fila['total_venta']; ?></td>
+                        <td>$<?php echo $fila['total_venta']; ?></td>
                         <td><?php echo $fila['estado']; ?></td>
                     </tr>
                 <?php endwhile; ?>
