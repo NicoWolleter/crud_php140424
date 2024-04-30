@@ -1,3 +1,3 @@
 <?php
-$conexion = new mysqli("localhost", "pma", "", "crud_php");
+  $conexion = new mysqli("db", "pma", "1234", "crud_php");
 ?>

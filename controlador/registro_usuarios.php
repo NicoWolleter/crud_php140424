@@ -2,7 +2,7 @@
 // Procesar el formulario cuando se envíe
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Incluir el archivo de conexión a la base de datos
-    include_once $_SERVER['DOCUMENT_ROOT'] . "/crud_php/modelo/conexion.php";
+    include_once $_SERVER['DOCUMENT_ROOT'] . "/modelo/conexion.php";
 
     // Obtener los datos del formulario
     $nombre_usuario = $_POST['nombre_usuario'];
